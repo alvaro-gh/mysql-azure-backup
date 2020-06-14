@@ -45,8 +45,8 @@ def mysqldump(db):
     try:
         p = subprocess.check_output(dump_command, shell=True)
         logging.info('Writing dump to ' + dump_file)
-        with open(dump_file, 'w') as f:
-            f.write(p.decode('utf-8'))
+        with open(dump_file, 'wb') as f:
+            f.write(p)
         sync(dump_file)
     except subprocess.CalledProcessError as ex:
         logging.error('Error while running mysqldump: ' + ex.output.decode('utf-8'))
