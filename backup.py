@@ -59,8 +59,12 @@ def sync(file):
     try:
         with open(file, 'rb') as f:
             blob_client.upload_blob(f)
+            if os.path.exists(file):
+                os.remove(file)
+            else:
+                logging.error('Unable to remove file ' + file)
     except StorageErrorException as ex:
-        logging.error("Error while uploading the file to Azure: " + ex.error)
+        logging.error('Error while uploading the file to Azure: ' + ex.error)
 
 def backup():
     logging.info('Starting backups...')
