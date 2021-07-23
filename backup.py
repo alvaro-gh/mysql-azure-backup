@@ -8,7 +8,8 @@ import sys
 import time
 import uuid
 
-from azure.storage.blob._models import StorageErrorException
+# from azure.storage.blob._models import StorageErrorException
+from azure.core.exceptions import AzureError
 from azure.storage.blob import BlobServiceClient, BlobClient, ContainerClient
 
 logging.basicConfig(stream=sys.stdout, level=logging.INFO)
@@ -66,8 +67,8 @@ def sync(file):
                 os.remove(file)
             else:
                 logging.error('Unable to remove file ' + file)
-    except StorageErrorException as ex:
-        logging.error('Error while uploading the file to Azure: ' + ex.error)
+    except AzureError as ex:
+        logging.error('Error while uploading the file to Azure, error code: ' + str(ex.error_code))
 
 def backup():
     logging.info('Starting backups...')
