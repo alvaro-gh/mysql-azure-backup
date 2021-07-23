@@ -57,9 +57,9 @@ def mysqldump(db):
 
 def sync(file):
     blob_service_client = BlobServiceClient.from_connection_string(az_st_conn_string)
-    blob_client = blob_service_client.get_blob_client('mysql', blob=os.path.basename(file).replace("'", ""))
+    blob_client = blob_service_client.get_blob_client('mysqlbackup', blob=os.path.basename(file).replace("'", ""))
 
-    logging.info('Uploading' + file + ' to Azure on container mysql')
+    logging.info('Uploading' + file + ' to Azure on container mysqlbackup')
     try:
         with open(file, 'rb') as f:
             blob_client.upload_blob(f)
