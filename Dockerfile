@@ -1,4 +1,4 @@
-FROM python:3.8.3-alpine
+FROM python:3.8.11-alpine3.13
 MAINTAINER aaraujo@protonmail.ch
 
 RUN apk add --update --no-cache gcc musl-dev libffi-dev openssl-dev mariadb-client rust
