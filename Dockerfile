@@ -1,9 +1,8 @@
 FROM python:3.8.11-alpine3.13
 MAINTAINER aaraujo@protonmail.ch
-ENV PATH="~/.cargo/bin:${PATH}"
+ENV PATH="/root/.cargo/bin:${PATH}"
 
-RUN apk add --update --no-cache gcc musl-dev libffi-dev openssl-dev mariadb-client curl
-RUN curl https://sh.rustup.rs -sSf | sh -s -- -y
+RUN apk add --update --no-cache gcc musl-dev libffi-dev openssl-dev mariadb-client rust cargo
 
 COPY . .
 RUN python -m pip install -U pip
