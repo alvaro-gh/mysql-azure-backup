@@ -1,6 +1,7 @@
 import datetime
 import logging
 import os
+import requests
 import schedule
 import subprocess
 import sys
@@ -21,6 +22,7 @@ db_user = os.getenv('MYSQL_USER', None)
 db_pass = os.getenv('MYSQL_PASSWORD', None)
 ## Azure
 az_st_conn_string = os.getenv('AZURE_STORAGE_CONNECTION_STRING', None)
+slack_webhook = os.getenv('SLACK_WEBHOOK', None)
 
 def check_envars():
     logging.info('Checking environment variables')
@@ -50,6 +52,7 @@ def mysqldump(db):
         sync(dump_file)
     except subprocess.CalledProcessError as ex:
         logging.error('Error while running mysqldump: ' + ex.output.decode('utf-8'))
+        slackit('MySQL Backup process has crashed.')
 
 def sync(file):
     blob_service_client = BlobServiceClient.from_connection_string(az_st_conn_string)
@@ -71,6 +74,10 @@ def backup():
     for db in db_name.split():
         logging.info('Backing up ' + db)
         mysqldump(db)
+    slackit('MySQL Backup process has finished.')
+
+def slackit(message):
+    r = requests.post(slack_webhook, json={"text":message})
 
 logging.info('MySQL backup service started on ' + str(datetime.datetime.now()))
 # Batman begins
